@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 
+import cookieParser from "cookie-parser";
 
 const app = express();
-const cookieParser=require("cookie-parser");
-const dbconnect = require('./config/db.config.js');
+import dbconnect from './config/db.config.js';
 
 dbconnect();
 
@@ -13,4 +13,4 @@ dbconnect();
 app.use('/',(req,res)=>{
     res.status(200).json({data:'Server is working'});
 });
-module.exports = app;
+export default app;

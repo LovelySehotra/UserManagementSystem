@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const MONGODB_URL = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/UMS";
 
 const dbconnect =()=>{
@@ -8,4 +8,4 @@ const dbconnect =()=>{
     .catch((err)=>console.log(err.message));
     
 };
-module.exports = dbconnect;
+export default dbconnect;
