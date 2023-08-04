@@ -1,8 +1,9 @@
-import User from "../model/userSchema.js";
+const {User} = require( "../model/userSchema.js");
+const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose")
+const JWT = require("jsonwebtoken")
 
-
-
-const register = async (req,res)=>{
+const signUp = async (req,res)=>{
     const {fullname,email,password}=req.body;
     if(!fullname || !email || !password)
     {
@@ -36,7 +37,7 @@ const register = async (req,res)=>{
 })
 
 };
-const login =async (req,res)=>{
+const logIn =async (req,res)=>{
     try {
         const{email,password} = req.body;
     if(!email || !password)
@@ -65,8 +66,8 @@ const login =async (req,res)=>{
     }
 
 };
-export {
-    register,
-    login,
+module.exports= {
+    signUp,
+    logIn,
    
 }

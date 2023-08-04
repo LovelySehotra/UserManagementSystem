@@ -1,12 +1,16 @@
-import {Router} from "express";
+const {Router} = require("express");
 
-// const{signUp,signIn,forgetPassword,}=require("../controller/userController.js");
+const {signUp,logIn}= require( "../controller/userController.js");
+const{signupValidator} = require("../middleware/signup.validator.js")
+const{loginValidator} = require("../middleware/login.validator.js")
 const router = Router();
 
-router.post("/signup",signUp);
-router.post("/login",login);
+router.post("/signup",signupValidator,signUp);
+router.post("/login",loginValidator,logIn);
 
 
 
 
-export default router;
+module.exports ={
+    router
+}

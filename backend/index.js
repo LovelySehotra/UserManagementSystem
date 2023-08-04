@@ -1,5 +1,5 @@
-const PORT = 5000;
-import app from './app.js';
+const PORT = process.env.PORT || 5500;
+const app =require( './app.js');
 app.listen(PORT,()=>{
-    console.log(`server is Listening at http://local:${PORT}`);
+    console.log(`server is Listening at http://localhost:${PORT}`);
 });
