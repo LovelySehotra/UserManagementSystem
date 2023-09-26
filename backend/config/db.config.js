@@ -1,13 +1,16 @@
 const  mongoose = require("mongoose");
 require("dotenv").config()
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/UMS";
 
-const dbconnect =()=>{
-    mongoose
-    .connect(MONGODB_URL)
-    .then((conn)=>console.log(`connected to db :${conn.connection.host}`))
-    .catch((err)=>console.log(err.message));
-    
-};
-module.exports = dbconnect;
-
+const dbconnect =async ()=>{
+    try {
+        const {connection} = await mongoose.connect(
+            process.env.MONG_URL || "mongodb://127.0.0.1:27017/ums"
+        ) 
+        if (connection) {
+            console.log(`DB is connect at ${connection.host}`)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+module.exports= dbconnect;
