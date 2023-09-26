@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/signUp.css">
+    <title>User Management System -Instagram</title>
+  </head>
+  <body>
+    <div class="signUp-page">
+      <div class="form">
+        <div class="signUp">
+          <div class="signUp-header">
+            <h3>Sign Up</h3>
+            <p>Enter your required details</p>
+          </div>
+        </div>
+        <form class="signUp-form">
+          <input type="text"  id="name" placeholder="full name" />
+          <input type="text" id="username" placeholder="@username" />
+          <input type="email" id="email" placeholder="email" />
+          <input type="password" id="password" placeholder="password" />
+          <input type="text" id="bio" placeholder="bio" />
+        
+        
+          <button id="submit" type="submit">Sign Up</button>
+          <p class="message">
+            Already registered? <a href="./register.html">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+
+    const formSubmit = document.getElementById("submit");   
+    formSubmit.addEventListener("click",(event)=>{
+        event.preventDefault()
+        const nameOfUser = document.getElementById("name").value
+        const userName=document.getElementById("username").value
+        const userEmail=document.getElementById("email").value
+        const userPassword=document.getElementById("password").value
+        const userBio = document.getElementById("bio").value
+
+        if(!userName && userEmail &&userEmail && userPassword  && nameOfUser && userBio) {  
+            alert("All input fields are required")
+            return 
+        }
+       
+        const userData = {
+            name:nameOfUser,
+            email:userEmail,
+            bio:userBio,
+            password:userPassword,
+            username:userName
+        }
+
+        registerUser(userData)
+        
+
+    })
+
+    const registerUser =async(payload)=>{
+      
+        try {
+        const resp = await fetch("http://localhost:3000/signup",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify(payload)
+        })
+
+        const data = await resp.json();
+        console.log(data)
+        window.location.href="http://localhost:5501/client/login.html"
+        
+       } catch (error) {
+            console.log(error.message)
+       }
+    }
+
+</script>
+</html>
