@@ -1,12 +1,11 @@
 exports.signupValidator = async (req,res,next) =>{
-    const {fullname,email,password}=req.body;
-    if(!fullname || !email || !password)
+    const {name,email,password,username}=req.body;
+    if(!name || !email || !password|| !username)
     {
-        return next(new AppError('All fields are required',400));
+        res.status(404).send({msg:"all Input Fields are required"})
+    }else{
+        next();
     }
 
-    const userExists = await User.findone({email});
-    if(userExists){
-        return next(new AppError('Email already exists',400));
-    }
+   
 }

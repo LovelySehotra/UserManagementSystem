@@ -1,29 +1,28 @@
 const {User} = require( "../model/userSchema.js");
-const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose")
+// const bcrypt = require("bcryptjs");
+// const mongoose = require("mongoose")
 const JWT = require("jsonwebtoken")
 
+const cookieOption = {
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    httpOnly: true,
+    secure: true
+}
 const signUp = async (req,res)=>{
-    const {fullname,email,password}=req.body;
-    if(!fullname || !email || !password)
-    {
-        return next(new AppError('All fields are required',400));
-    }
-
-    const userExists = await User.findone({email});
-    if(userExists){
-        return next(new AppError('Email already exists',400));
-    }
+    const {name,email,password,username,bio}=req.body;
+    
     const user = await User.create({
-        fullname,
+        name,
         email,
         password,
+        username,
+        bio
       
     });
     if(!user){
-        return next (new AppError('User registration failed,please try again'));
+        res.status(501).send({msg:error.message})
     }
-    // TODO FILE upload
+
  
     await user.save();
     user.password = undefined;
@@ -38,18 +37,15 @@ const signUp = async (req,res)=>{
 
 };
 const logIn =async (req,res)=>{
+    const {username,password} = req.body;
     try {
-        const{email,password} = req.body;
-    if(!email || !password)
-    {
-        return next(new AppError('All fields are required',400));
-    }
+    
     const user = await User.findOne({
-        email
+        username
     }).select('+password');
     if(!user || !user.comparePassword(password))
     {
-        return next(new AppError('Email or password does not exist',400));
+        res.status(404).send({msg:"No Account Found Associated with this username"})
     }
     const token = await user.generateJWTToken();
     user.password = undefined;
@@ -62,12 +58,27 @@ const logIn =async (req,res)=>{
         user,
     });
     } catch (e) {
-        return next(new AppError(e.message,500));
+        res.status(500).send({msg:e.message})
     }
 
 };
+const getUserDetails = async(req,res)=>{
+    // const {username} = req.user;
+    try {
+        console.log("he")
+        const {userId} = req.user._id;
+        const userData = await User.findOne({userId});
+        console.log(userData);
+        res.status(200).send({
+            msg:"Success",
+            data:userData
+        })
+    } catch (err) {
+        res.status(501).send({msg:err.message})
+    }
+}
 module.exports= {
     signUp,
     logIn,
-   
+   getUserDetails
 }
